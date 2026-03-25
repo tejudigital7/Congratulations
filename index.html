@@ -1,83 +1,102 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>For My Bava 💍</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            background: linear-gradient(to right, #ff9a9e, #fad0c4);
-            font-family: 'Segoe UI', sans-serif;
-            text-align: center;
-            color: #fff;
-        }
+<meta charset="UTF-8">
+<title>For My Bava 💍</title>
 
-        .container {
-            margin-top: 100px;
-            animation: fadeIn 2s ease-in;
-        }
+<style>
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, #ff9a9e, #fad0c4);
+    font-family: 'Segoe UI', sans-serif;
+    text-align: center;
+    color: #fff;
+}
 
-        h1 {
-            font-size: 3em;
-        }
+.page {
+    display: none;
+    margin-top: 120px;
+    animation: fadeIn 1.5s;
+}
 
-        h2 {
-            font-size: 2em;
-            margin-top: 20px;
-        }
+.active {
+    display: block;
+}
 
-        p {
-            font-size: 1.3em;
-            margin-top: 20px;
-            padding: 0 20px;
-        }
+button {
+    margin-top: 30px;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 25px;
+    background: #fff;
+    color: #ff6b81;
+    font-size: 16px;
+    cursor: pointer;
+}
 
-        .heart {
-            font-size: 40px;
-            animation: beat 1s infinite;
-        }
+button:hover {
+    background: #ffe6ea;
+}
 
-        @keyframes beat {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.3); }
-            100% { transform: scale(1); }
-        }
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+</style>
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        .footer {
-            margin-top: 50px;
-            font-size: 1.2em;
-        }
-    </style>
 </head>
+
 <body>
 
-    <div class="container">
-        <h1>Congratulations Bava 💍</h1>
-        <h2>We are Engaged ❤️</h2>
+<!-- Page 1 -->
+<div class="page active">
+    <h1>Hey Bava ❤️</h1>
+    <p>I have something to tell you...</p>
+    <button onclick="nextPage()">Click here 👀</button>
+</div>
 
-        <p>
-            Finally, it's official… we are going to be together forever! 💕<br><br>
-            From strangers to something so special… and now soon to be life partners 🥹❤️
-        </p>
+<!-- Page 2 -->
+<div class="page">
+    <h1>You know what? 🥹</h1>
+    <p>Life became so beautiful after you came into it 💫</p>
+    <button onclick="nextPage()">Next ➡️</button>
+</div>
 
-        <p>
-            I can't wait to start this beautiful journey with you 💫<br>
-            Laughing, fighting, loving… everything together 🫶
-        </p>
+<!-- Page 3 -->
+<div class="page">
+    <h1>And now… 💍</h1>
+    <p>We are officially ENGAGED ❤️</p>
+    <button onclick="nextPage()">Next ➡️</button>
+</div>
 
-        <div class="heart">❤️</div>
+<!-- Page 4 -->
+<div class="page">
+    <h1>Congratulations Bava 🎉</h1>
+    <p>We are getting married soon 💖</p>
+    <button onclick="nextPage()">One last thing 👇</button>
+</div>
 
-        <p class="footer">
-            Soon… "We are getting married" 💍✨<br><br>
-            Forever yours 💖
-        </p>
-    </div>
+<!-- Page 5 -->
+<div class="page">
+    <h1>Forever Us 💕</h1>
+    <p>
+        I can’t wait to spend my whole life with you 🥹<br><br>
+        Laughing, fighting, loving… everything together 💫<br><br>
+        Forever yours ❤️
+    </p>
+</div>
+
+<script>
+let currentPage = 0;
+const pages = document.querySelectorAll('.page');
+
+function nextPage() {
+    pages[currentPage].classList.remove('active');
+    currentPage++;
+    pages[currentPage].classList.add('active');
+}
+</script>
 
 </body>
 </html>
