@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>For My Bava 💍</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to right, #ff9a9e, #fad0c4);
+            font-family: 'Segoe UI', sans-serif;
+            text-align: center;
+            color: #fff;
+        }
+
+        .container {
+            margin-top: 100px;
+            animation: fadeIn 2s ease-in;
+        }
+
+        h1 {
+            font-size: 3em;
+        }
+
+        h2 {
+            font-size: 2em;
+            margin-top: 20px;
+        }
+
+        p {
+            font-size: 1.3em;
+            margin-top: 20px;
+            padding: 0 20px;
+        }
+
+        .heart {
+            font-size: 40px;
+            animation: beat 1s infinite;
+        }
+
+        @keyframes beat {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.3); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .footer {
+            margin-top: 50px;
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Congratulations Bava 💍</h1>
+        <h2>We are Engaged ❤️</h2>
+
+        <p>
+            Finally, it's official… we are going to be together forever! 💕<br><br>
+            From strangers to something so special… and now soon to be life partners 🥹❤️
+        </p>
+
+        <p>
+            I can't wait to start this beautiful journey with you 💫<br>
+            Laughing, fighting, loving… everything together 🫶
+        </p>
+
+        <div class="heart">❤️</div>
+
+        <p class="footer">
+            Soon… "We are getting married" 💍✨<br><br>
+            Forever yours 💖
+        </p>
+    </div>
+
+</body>
+</html>
