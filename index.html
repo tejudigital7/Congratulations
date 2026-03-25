@@ -9,56 +9,47 @@ body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
     color: #fff;
-}
+    overflow: hidden;
 
-html {
-    scroll-behavior: smooth;
-}
-
-/* Each section full screen */
-.page {
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 20px;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+
+    transition: background 1s ease-in-out;
 }
 
-/* Backgrounds for each section */
-.page1 { background: url('bg1.png') center/cover no-repeat; }
-.page2 { background: url('bg2.jpg') center/cover no-repeat; }
-.page3 { background: url('bg3.jpg') center/cover no-repeat; }
-.page4 { background: url('bg4.jpg') center/cover no-repeat; }
-.page5 { background: url('bg5.jpg') center/cover no-repeat; }
-.page6 { background: url('bg5.jpg') center/cover no-repeat; }
-
-/* Dark overlay */
-.page::before {
-    content: "";
-    position: absolute;
+/* Overlay */
+.overlay {
+    position: fixed;
     top: 0;
     left: 0;
     height: 100%;
     width: 100%;
     background: rgba(0,0,0,0.5);
-    z-index: 0;
 }
 
-/* Content above overlay */
-.page * {
-    position: relative;
-    z-index: 1;
+/* Pages */
+.page {
+    display: none;
+    height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    text-align: center;
+    padding: 20px;
+}
+
+.active {
+    display: flex;
 }
 
 /* Button */
 button {
-    margin-top: 20px;
-    padding: 10px 20px;
+    margin-top: 25px;
+    padding: 12px 25px;
     border-radius: 25px;
     border: none;
     background: #fff;
@@ -66,9 +57,17 @@ button {
     cursor: pointer;
 }
 
-/* Floating hearts */
+/* Typing */
+.typing {
+    font-size: 1.5em;
+    border-right: 2px solid #fff;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+/* Hearts */
 .heart {
-    position: fixed;
+    position: absolute;
     color: #ff4d6d;
     animation: float 6s linear infinite;
 }
@@ -79,92 +78,137 @@ button {
 }
 
 /* Slideshow */
-.slideshow img {
+.slide {
+    display: none;
     width: 250px;
     border-radius: 15px;
-    margin: 10px;
-    display: none;
 }
 </style>
 </head>
 
 <body>
 
-<!-- Page 1 -->
-<section class="page page1">
-    <h1>Hey Bava ❤️</h1>
-    <p>I have something to tell you...</p>
-</section>
+<div class="overlay"></div>
 
-<!-- Page 2 -->
-<section class="page page2">
-    <h1>You know what? 🥹</h1>
-    <p>Life became so beautiful after you came into it 💫</p>
-</section>
-
-<!-- Page 3 -->
-<section class="page page3">
-    <h1>Don’t scroll fast 😈</h1>
-    <p>Something special is coming...</p>
-</section>
-
-<!-- Page 4 -->
-<section class="page page4">
-    <h1>💍 We are ENGAGED ❤️</h1>
-</section>
-
-<!-- Page 5 -->
-<section class="page page5">
-    <h1>Congratulations Bava 🎉</h1>
-    <p>We are getting married soon 💖</p>
-</section>
-
-<!-- Page 6 -->
-<section class="page page6">
-    <h1>Our Beautiful Journey 📸</h1>
-
-    <div class="slideshow">
-        <img src="photo1.jpg" class="slide">
-        <img src="photo2.jpg" class="slide">
-        <img src="photo3.jpg" class="slide">
-    </div>
-
-    <p>I love you forever ❤️</p>
-</section>
-
-<!-- MUSIC -->
-<audio autoplay loop>
+<audio id="music" loop>
     <source src="music.mp3" type="audio/mpeg">
 </audio>
 
-<script>
-/* Floating hearts */
-function createHeart() {
-    const heart = document.createElement("div");
-    heart.classList.add("heart");
-    heart.innerHTML = "❤️";
-    heart.style.left = Math.random() * 100 + "vw";
-    heart.style.fontSize = (Math.random() * 20 + 20) + "px";
-    document.body.appendChild(heart);
+<!-- Page 1 -->
+<div class="page active">
+    <h1>Hey Bava ❤️</h1>
+    <p>I have something to tell you...</p>
+    <button onclick="start()">Click here 👀</button>
+</div>
 
-    setTimeout(() => {
-        heart.remove();
-    }, 6000);
+<!-- Page 2 -->
+<div class="page">
+    <div id="text"></div>
+    <button onclick="next()">Next ➡️</button>
+</div>
+
+<!-- Page 3 -->
+<div class="page">
+    <h1>Don’t click this 😈</h1>
+    <button onclick="fun()">Click anyway</button>
+</div>
+
+<!-- Page 4 -->
+<div class="page">
+    <h1>💍 We are ENGAGED ❤️</h1>
+    <button onclick="next()">Next ➡️</button>
+</div>
+
+<!-- Page 5 -->
+<div class="page">
+    <h1>Congratulations Bava 🎉</h1>
+    <p>We are getting married soon 💖</p>
+    <button onclick="next()">Last surprise 👇</button>
+</div>
+
+<!-- Page 6 -->
+<div class="page">
+    <h1>Our Beautiful Journey 📸</h1>
+    <img src="photo1.jpg" class="slide">
+    <img src="photo2.jpg" class="slide">
+    <img src="photo3.jpg" class="slide">
+    <p>I love you forever ❤️</p>
+</div>
+
+<script>
+let i = 0;
+const pages = document.querySelectorAll(".page");
+
+const bg = [
+    "url('bg1.png')",
+    "url('bg2.jpg')",
+    "url('bg3.jpg')",
+    "url('bg4.jpg')",
+    "url('bg5.jpg')",
+    "url('bg5.jpg')"
+];
+
+document.body.style.backgroundImage = bg[0];
+
+/* Start */
+function start() {
+    document.getElementById("music").play();
+    next();
+    typeText("Life became so beautiful after you came into it 💫");
 }
-setInterval(createHeart, 500);
+
+/* Typing */
+function typeText(text) {
+    let j = 0;
+    let el = document.getElementById("text");
+    el.innerHTML = "";
+
+    function type() {
+        if (j < text.length) {
+            el.innerHTML += text.charAt(j);
+            j++;
+            setTimeout(type, 50);
+        }
+    }
+    type();
+}
+
+/* Next page */
+function next() {
+    pages[i].classList.remove("active");
+    i++;
+    pages[i].classList.add("active");
+    document.body.style.backgroundImage = bg[i];
+}
+
+/* Fun button */
+function fun() {
+    alert("😜 I knew it!");
+    next();
+}
+
+/* Hearts */
+setInterval(() => {
+    let h = document.createElement("div");
+    h.innerHTML = "❤️";
+    h.className = "heart";
+    h.style.left = Math.random() * 100 + "vw";
+    h.style.fontSize = (Math.random()*20+20)+"px";
+    document.body.appendChild(h);
+
+    setTimeout(()=>h.remove(),6000);
+},500);
 
 /* Slideshow */
-let slideIndex = 0;
+let s = 0;
 const slides = document.querySelectorAll(".slide");
 
-function showSlides() {
-    slides.forEach(s => s.style.display = "none");
-    slideIndex++;
-    if (slideIndex > slides.length) slideIndex = 1;
-    slides[slideIndex - 1].style.display = "block";
-    setTimeout(showSlides, 2000);
-}
-showSlides();
+setInterval(() => {
+    slides.forEach(img => img.style.display="none");
+    s++;
+    if (s > slides.length) s = 1;
+    slides[s-1].style.display = "block";
+},2000);
 </script>
 
 </body>
