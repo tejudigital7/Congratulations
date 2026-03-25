@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -7,30 +7,37 @@
 <style>
 body {
     margin: 0;
+    padding: 0;
     font-family: 'Segoe UI', sans-serif;
     color: #fff;
-    overflow: hidden;
 
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 
     transition: background 1s ease-in-out;
+
+    height: 100vh;
+    overflow: hidden;
 }
 
 /* Overlay */
 .overlay {
+    background: rgba(0,0,0,0.5);
+    backdrop-filter: blur(2px);
+    height: 100vh;
+    width: 100%;
     position: fixed;
     top: 0;
     left: 0;
-    height: 100%;
-    width: 100%;
-    background: rgba(0,0,0,0.5);
 }
 
 /* Pages */
 .page {
     display: none;
+    position: relative;
+    z-index: 2;
+
     height: 100vh;
 
     display: flex;
@@ -42,30 +49,37 @@ body {
     padding: 20px;
 }
 
+/* Active page */
 .active {
     display: flex;
 }
 
-/* Button */
+/* Buttons */
 button {
-    margin-top: 25px;
+    margin-top: 30px;
     padding: 12px 25px;
-    border-radius: 25px;
     border: none;
+    border-radius: 25px;
     background: #fff;
     color: #ff4d6d;
+    font-size: 16px;
     cursor: pointer;
 }
 
-/* Typing */
+button:hover {
+    background: #ffe6ea;
+}
+
+/* Typing effect */
 .typing {
     font-size: 1.5em;
+    width: 80%;
     border-right: 2px solid #fff;
     white-space: nowrap;
     overflow: hidden;
 }
 
-/* Hearts */
+/* Floating hearts */
 .heart {
     position: absolute;
     color: #ff4d6d;
@@ -73,15 +87,16 @@ button {
 }
 
 @keyframes float {
-    from { transform: translateY(100vh); }
-    to { transform: translateY(-10vh); }
+    from { transform: translateY(100vh); opacity: 1; }
+    to { transform: translateY(-10vh); opacity: 0; }
 }
 
 /* Slideshow */
-.slide {
-    display: none;
+.slideshow img {
     width: 250px;
     border-radius: 15px;
+    margin: 10px;
+    display: none;
 }
 </style>
 </head>
@@ -98,48 +113,52 @@ button {
 <div class="page active">
     <h1>Hey Bava ❤️</h1>
     <p>I have something to tell you...</p>
-    <button onclick="start()">Click here 👀</button>
+    <button onclick="startExperience()">Click here 👀</button>
 </div>
 
 <!-- Page 2 -->
 <div class="page">
-    <div id="text"></div>
-    <button onclick="next()">Next ➡️</button>
+    <div id="text1" class="typing"></div>
+    <button onclick="nextPage()">Next ➡️</button>
 </div>
 
 <!-- Page 3 -->
 <div class="page">
     <h1>Don’t click this 😈</h1>
-    <button onclick="fun()">Click anyway</button>
+    <button onclick="reveal()">Click anyway</button>
 </div>
 
 <!-- Page 4 -->
 <div class="page">
     <h1>💍 We are ENGAGED ❤️</h1>
-    <button onclick="next()">Next ➡️</button>
+    <button onclick="nextPage()">Next ➡️</button>
 </div>
 
 <!-- Page 5 -->
 <div class="page">
     <h1>Congratulations Bava 🎉</h1>
     <p>We are getting married soon 💖</p>
-    <button onclick="next()">Last surprise 👇</button>
+    <button onclick="nextPage()">Last surprise 👇</button>
 </div>
 
 <!-- Page 6 -->
 <div class="page">
     <h1>Our Beautiful Journey 📸</h1>
-    <img src="photo1.jpg" class="slide">
-    <img src="photo2.jpg" class="slide">
-    <img src="photo3.jpg" class="slide">
+
+    <div class="slideshow">
+        <img src="photo1.jpg" class="slide">
+        <img src="photo2.jpg" class="slide">
+        <img src="photo3.jpg" class="slide">
+    </div>
+
     <p>I love you forever ❤️</p>
 </div>
 
 <script>
-let i = 0;
-const pages = document.querySelectorAll(".page");
+let currentPage = 0;
+const pages = document.querySelectorAll('.page');
 
-const bg = [
+const backgrounds = [
     "url('bg1.png')",
     "url('bg2.jpg')",
     "url('bg3.jpg')",
@@ -148,67 +167,69 @@ const bg = [
     "url('bg5.jpg')"
 ];
 
-document.body.style.backgroundImage = bg[0];
+document.body.style.backgroundImage = backgrounds[0];
 
-/* Start */
-function start() {
+/* Start + music */
+function startExperience() {
     document.getElementById("music").play();
-    next();
-    typeText("Life became so beautiful after you came into it 💫");
+    nextPage();
+    typeText("text1", "Life became so beautiful after you came into it 💫");
 }
 
-/* Typing */
-function typeText(text) {
-    let j = 0;
-    let el = document.getElementById("text");
-    el.innerHTML = "";
-
-    function type() {
-        if (j < text.length) {
-            el.innerHTML += text.charAt(j);
-            j++;
-            setTimeout(type, 50);
+/* Typing effect */
+function typeText(id, text) {
+    let i = 0;
+    function typing() {
+        if (i < text.length) {
+            document.getElementById(id).innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typing, 50);
         }
     }
-    type();
+    typing();
 }
 
 /* Next page */
-function next() {
-    pages[i].classList.remove("active");
-    i++;
-    pages[i].classList.add("active");
-    document.body.style.backgroundImage = bg[i];
+function nextPage() {
+    pages[currentPage].classList.remove('active');
+    currentPage++;
+    pages[currentPage].classList.add('active');
+    document.body.style.backgroundImage = backgrounds[currentPage];
 }
 
-/* Fun button */
-function fun() {
-    alert("😜 I knew it!");
-    next();
+/* Naughty button */
+function reveal() {
+    alert("Hehe 😜 I knew you will click!");
+    nextPage();
 }
 
-/* Hearts */
-setInterval(() => {
-    let h = document.createElement("div");
-    h.innerHTML = "❤️";
-    h.className = "heart";
-    h.style.left = Math.random() * 100 + "vw";
-    h.style.fontSize = (Math.random()*20+20)+"px";
-    document.body.appendChild(h);
+/* Floating hearts */
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (Math.random() * 20 + 20) + "px";
+    document.body.appendChild(heart);
 
-    setTimeout(()=>h.remove(),6000);
-},500);
+    setTimeout(() => {
+        heart.remove();
+    }, 6000);
+}
+setInterval(createHeart, 500);
 
 /* Slideshow */
-let s = 0;
+let slideIndex = 0;
 const slides = document.querySelectorAll(".slide");
 
-setInterval(() => {
-    slides.forEach(img => img.style.display="none");
-    s++;
-    if (s > slides.length) s = 1;
-    slides[s-1].style.display = "block";
-},2000);
+function showSlides() {
+    slides.forEach(s => s.style.display = "none");
+    slideIndex++;
+    if (slideIndex > slides.length) slideIndex = 1;
+    slides[slideIndex - 1].style.display = "block";
+    setTimeout(showSlides, 2000);
+}
+showSlides();
 </script>
 
 </body>
