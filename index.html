@@ -18,7 +18,6 @@ body {
     overflow: hidden;
 }
 
-/* Dark overlay */
 .overlay {
     background: rgba(0,0,0,0.5);
     height: 100vh;
@@ -28,20 +27,18 @@ body {
     left: 0;
 }
 
-/* Pages */
 .page {
     display: none;
     position: relative;
     z-index: 2;
     margin-top: 120px;
-    animation: fadeIn 1.5s;
 }
 
 .active {
     display: block;
 }
 
-/* Button */
+/* Buttons */
 button {
     margin-top: 30px;
     padding: 12px 25px;
@@ -55,6 +52,16 @@ button {
 
 button:hover {
     background: #ffe6ea;
+}
+
+/* Typing effect */
+.typing {
+    font-size: 1.5em;
+    width: 80%;
+    margin: auto;
+    border-right: 2px solid #fff;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 /* Floating hearts */
@@ -74,13 +81,7 @@ button:hover {
     width: 250px;
     border-radius: 15px;
     margin: 10px;
-    animation: fadeIn 2s;
-}
-
-/* Fade */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    display: none;
 }
 </style>
 </head>
@@ -89,8 +90,7 @@ button:hover {
 
 <div class="overlay"></div>
 
-<!-- MUSIC -->
-<audio autoplay loop>
+<audio id="music" loop>
     <source src="music.mp3" type="audio/mpeg">
 </audio>
 
@@ -98,44 +98,45 @@ button:hover {
 <div class="page active">
     <h1>Hey Bava ❤️</h1>
     <p>I have something to tell you...</p>
-    <button onclick="nextPage()">Click here 👀</button>
+    <button onclick="startExperience()">Click here 👀</button>
 </div>
 
 <!-- Page 2 -->
 <div class="page">
-    <h1>You know what? 🥹</h1>
-    <p>Life became so beautiful after you came into it 💫</p>
+    <div id="text1" class="typing"></div>
     <button onclick="nextPage()">Next ➡️</button>
 </div>
 
 <!-- Page 3 -->
 <div class="page">
-    <h1>And now… 💍</h1>
-    <p>We are officially ENGAGED ❤️</p>
-    <button onclick="nextPage()">Next ➡️</button>
+    <h1>Don’t click this 😈</h1>
+    <button onclick="reveal()">Click anyway</button>
 </div>
 
 <!-- Page 4 -->
 <div class="page">
-    <h1>Congratulations Bava 🎉</h1>
-    <p>We are getting married soon 💖</p>
-    <button onclick="nextPage()">One last thing 👇</button>
+    <h1>💍 We are ENGAGED ❤️</h1>
+    <button onclick="nextPage()">Next ➡️</button>
 </div>
 
-<!-- Page 5 (Slideshow) -->
+<!-- Page 5 -->
+<div class="page">
+    <h1>Congratulations Bava 🎉</h1>
+    <p>We are getting married soon 💖</p>
+    <button onclick="nextPage()">Last surprise 👇</button>
+</div>
+
+<!-- Page 6 (Slideshow) -->
 <div class="page">
     <h1>Our Beautiful Journey 📸</h1>
 
     <div class="slideshow">
-        <img src="photo1.jpg">
-        <img src="photo2.jpg">
-        <img src="photo3.jpg">
+        <img src="photo1.jpg" class="slide">
+        <img src="photo2.jpg" class="slide">
+        <img src="photo3.jpg" class="slide">
     </div>
 
-    <p>
-        This is just the beginning of our forever 💕<br><br>
-        I love you Bava ❤️
-    </p>
+    <p>I love you forever ❤️</p>
 </div>
 
 <script>
@@ -147,11 +148,33 @@ const backgrounds = [
     "url('bg2.jpg')",
     "url('bg3.jpg')",
     "url('bg4.jpg')",
+    "url('bg5.jpg')",
     "url('bg5.jpg')"
 ];
 
 document.body.style.backgroundImage = backgrounds[0];
 
+/* Start + music */
+function startExperience() {
+    document.getElementById("music").play();
+    nextPage();
+    typeText("text1", "Life became so beautiful after you came into it 💫");
+}
+
+/* Typing effect */
+function typeText(id, text) {
+    let i = 0;
+    function typing() {
+        if (i < text.length) {
+            document.getElementById(id).innerHTML += text.charAt(i);
+            i++;
+            setTimeout(typing, 50);
+        }
+    }
+    typing();
+}
+
+/* Next page */
 function nextPage() {
     pages[currentPage].classList.remove('active');
     currentPage++;
@@ -159,7 +182,13 @@ function nextPage() {
     document.body.style.backgroundImage = backgrounds[currentPage];
 }
 
-/* Floating hearts generator */
+/* Naughty button reveal */
+function reveal() {
+    alert("Hehe 😜 I knew you will click!");
+    nextPage();
+}
+
+/* Floating hearts */
 function createHeart() {
     const heart = document.createElement("div");
     heart.classList.add("heart");
@@ -172,8 +201,20 @@ function createHeart() {
         heart.remove();
     }, 6000);
 }
-
 setInterval(createHeart, 500);
+
+/* Slideshow */
+let slideIndex = 0;
+const slides = document.querySelectorAll(".slide");
+
+function showSlides() {
+    slides.forEach(s => s.style.display = "none");
+    slideIndex++;
+    if (slideIndex > slides.length) slideIndex = 1;
+    slides[slideIndex - 1].style.display = "block";
+    setTimeout(showSlides, 2000);
+}
+showSlides();
 </script>
 
 </body>
