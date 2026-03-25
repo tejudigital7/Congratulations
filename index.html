@@ -7,88 +7,75 @@
 <style>
 body {
     margin: 0;
-    padding: 0;
     font-family: 'Segoe UI', sans-serif;
     color: #fff;
-
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-
-    transition: background 1s ease-in-out;
-
-    height: 100vh;
-    overflow: hidden;
 }
 
-/* Overlay */
-.overlay {
-    background: rgba(0,0,0,0.5);
-    backdrop-filter: blur(2px);
-    height: 100vh;
-    width: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
+html {
+    scroll-behavior: smooth;
 }
 
-/* Pages */
+/* Each section full screen */
 .page {
-    display: none;
-    position: relative;
-    z-index: 2;
-
     height: 100vh;
-
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-
     text-align: center;
     padding: 20px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-/* Active page */
-.active {
-    display: flex;
+/* Backgrounds for each section */
+.page1 { background: url('bg1.png') center/cover no-repeat; }
+.page2 { background: url('bg2.jpg') center/cover no-repeat; }
+.page3 { background: url('bg3.jpg') center/cover no-repeat; }
+.page4 { background: url('bg4.jpg') center/cover no-repeat; }
+.page5 { background: url('bg5.jpg') center/cover no-repeat; }
+.page6 { background: url('bg5.jpg') center/cover no-repeat; }
+
+/* Dark overlay */
+.page::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background: rgba(0,0,0,0.5);
+    z-index: 0;
 }
 
-/* Buttons */
+/* Content above overlay */
+.page * {
+    position: relative;
+    z-index: 1;
+}
+
+/* Button */
 button {
-    margin-top: 30px;
-    padding: 12px 25px;
-    border: none;
+    margin-top: 20px;
+    padding: 10px 20px;
     border-radius: 25px;
+    border: none;
     background: #fff;
     color: #ff4d6d;
-    font-size: 16px;
     cursor: pointer;
-}
-
-button:hover {
-    background: #ffe6ea;
-}
-
-/* Typing effect */
-.typing {
-    font-size: 1.5em;
-    width: 80%;
-    border-right: 2px solid #fff;
-    white-space: nowrap;
-    overflow: hidden;
 }
 
 /* Floating hearts */
 .heart {
-    position: absolute;
+    position: fixed;
     color: #ff4d6d;
     animation: float 6s linear infinite;
 }
 
 @keyframes float {
-    from { transform: translateY(100vh); opacity: 1; }
-    to { transform: translateY(-10vh); opacity: 0; }
+    from { transform: translateY(100vh); }
+    to { transform: translateY(-10vh); }
 }
 
 /* Slideshow */
@@ -103,46 +90,37 @@ button:hover {
 
 <body>
 
-<div class="overlay"></div>
-
-<audio id="music" loop>
-    <source src="music.mp3" type="audio/mpeg">
-</audio>
-
 <!-- Page 1 -->
-<div class="page active">
+<section class="page page1">
     <h1>Hey Bava ❤️</h1>
     <p>I have something to tell you...</p>
-    <button onclick="startExperience()">Click here 👀</button>
-</div>
+</section>
 
 <!-- Page 2 -->
-<div class="page">
-    <div id="text1" class="typing"></div>
-    <button onclick="nextPage()">Next ➡️</button>
-</div>
+<section class="page page2">
+    <h1>You know what? 🥹</h1>
+    <p>Life became so beautiful after you came into it 💫</p>
+</section>
 
 <!-- Page 3 -->
-<div class="page">
-    <h1>Don’t click this 😈</h1>
-    <button onclick="reveal()">Click anyway</button>
-</div>
+<section class="page page3">
+    <h1>Don’t scroll fast 😈</h1>
+    <p>Something special is coming...</p>
+</section>
 
 <!-- Page 4 -->
-<div class="page">
+<section class="page page4">
     <h1>💍 We are ENGAGED ❤️</h1>
-    <button onclick="nextPage()">Next ➡️</button>
-</div>
+</section>
 
 <!-- Page 5 -->
-<div class="page">
+<section class="page page5">
     <h1>Congratulations Bava 🎉</h1>
     <p>We are getting married soon 💖</p>
-    <button onclick="nextPage()">Last surprise 👇</button>
-</div>
+</section>
 
 <!-- Page 6 -->
-<div class="page">
+<section class="page page6">
     <h1>Our Beautiful Journey 📸</h1>
 
     <div class="slideshow">
@@ -152,57 +130,14 @@ button:hover {
     </div>
 
     <p>I love you forever ❤️</p>
-</div>
+</section>
+
+<!-- MUSIC -->
+<audio autoplay loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
 
 <script>
-let currentPage = 0;
-const pages = document.querySelectorAll('.page');
-
-const backgrounds = [
-    "url('bg1.png')",
-    "url('bg2.jpg')",
-    "url('bg3.jpg')",
-    "url('bg4.jpg')",
-    "url('bg5.jpg')",
-    "url('bg5.jpg')"
-];
-
-document.body.style.backgroundImage = backgrounds[0];
-
-/* Start + music */
-function startExperience() {
-    document.getElementById("music").play();
-    nextPage();
-    typeText("text1", "Life became so beautiful after you came into it 💫");
-}
-
-/* Typing effect */
-function typeText(id, text) {
-    let i = 0;
-    function typing() {
-        if (i < text.length) {
-            document.getElementById(id).innerHTML += text.charAt(i);
-            i++;
-            setTimeout(typing, 50);
-        }
-    }
-    typing();
-}
-
-/* Next page */
-function nextPage() {
-    pages[currentPage].classList.remove('active');
-    currentPage++;
-    pages[currentPage].classList.add('active');
-    document.body.style.backgroundImage = backgrounds[currentPage];
-}
-
-/* Naughty button */
-function reveal() {
-    alert("Hehe 😜 I knew you will click!");
-    nextPage();
-}
-
 /* Floating hearts */
 function createHeart() {
     const heart = document.createElement("div");
