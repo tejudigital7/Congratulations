@@ -11,21 +11,24 @@ body {
     font-family: 'Segoe UI', sans-serif;
     text-align: center;
     color: #fff;
-    transition: background 1s ease-in-out;
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
+    transition: background 1s ease-in-out;
+    overflow: hidden;
 }
 
-/* Overlay for readability */
+/* Dark overlay */
 .overlay {
     background: rgba(0,0,0,0.5);
     height: 100vh;
     width: 100%;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
 }
 
+/* Pages */
 .page {
     display: none;
     position: relative;
@@ -38,6 +41,7 @@ body {
     display: block;
 }
 
+/* Button */
 button {
     margin-top: 30px;
     padding: 12px 25px;
@@ -53,23 +57,42 @@ button:hover {
     background: #ffe6ea;
 }
 
-img {
+/* Floating hearts */
+.heart {
+    position: absolute;
+    color: #ff4d6d;
+    animation: float 6s linear infinite;
+}
+
+@keyframes float {
+    from { transform: translateY(100vh); opacity: 1; }
+    to { transform: translateY(-10vh); opacity: 0; }
+}
+
+/* Slideshow */
+.slideshow img {
     width: 250px;
     border-radius: 15px;
     margin: 10px;
+    animation: fadeIn 2s;
 }
 
+/* Fade */
 @keyframes fadeIn {
     from { opacity: 0; }
     to { opacity: 1; }
 }
 </style>
-
 </head>
 
 <body>
 
 <div class="overlay"></div>
+
+<!-- MUSIC -->
+<audio autoplay loop>
+    <source src="music.mp3" type="audio/mpeg">
+</audio>
 
 <!-- Page 1 -->
 <div class="page active">
@@ -99,14 +122,15 @@ img {
     <button onclick="nextPage()">One last thing 👇</button>
 </div>
 
-<!-- Page 5 (Photos) -->
+<!-- Page 5 (Slideshow) -->
 <div class="page">
-    <h1>Our Beautiful Moment 📸</h1>
+    <h1>Our Beautiful Journey 📸</h1>
 
-    <!-- ADD YOUR IMAGES HERE -->
-    <img src="photo1.jpg">
-    <img src="photo2.jpg">
-    <img src="photo3.jpg">
+    <div class="slideshow">
+        <img src="photo1.jpg">
+        <img src="photo2.jpg">
+        <img src="photo3.jpg">
+    </div>
 
     <p>
         This is just the beginning of our forever 💕<br><br>
@@ -132,9 +156,24 @@ function nextPage() {
     pages[currentPage].classList.remove('active');
     currentPage++;
     pages[currentPage].classList.add('active');
-
     document.body.style.backgroundImage = backgrounds[currentPage];
 }
+
+/* Floating hearts generator */
+function createHeart() {
+    const heart = document.createElement("div");
+    heart.classList.add("heart");
+    heart.innerHTML = "❤️";
+    heart.style.left = Math.random() * 100 + "vw";
+    heart.style.fontSize = (Math.random() * 20 + 20) + "px";
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+        heart.remove();
+    }, 6000);
+}
+
+setInterval(createHeart, 500);
 </script>
 
 </body>
